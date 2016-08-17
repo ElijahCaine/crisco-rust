@@ -1,0 +1,12 @@
+[package]
+name = "crisco"
+version = "0.1.0"
+authors = [
+    "Elijah C. Voigt <elijahcainemv@gmail.com>"
+]
+readme = "README.md"
+description = "A URL Shortener."
+license = "MIT"
+
+[dependencies]
+iron = "0.4.0"
