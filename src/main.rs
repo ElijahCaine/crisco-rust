@@ -11,7 +11,10 @@
 #![doc(html_logo_url = "https://upload.wikimedia.org/wikipedia/en/4/47/Crisco_logo.png",
        html_favicon_url = "https://www.rust-lang.org/favicon.ico")]
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
+#![feature(stmt_expr_attributes)]
 #[deny(missing_docs)]
+
+extern crate iron;
 
 pub mod database;
 pub mod handler;
