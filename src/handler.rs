@@ -60,9 +60,7 @@ impl Router {
         self.routes.insert(path, Box::new(handler));
     }
 
-    pub fn del(&mut self, path: String) {
-
-    }
+    // pub fn del(&mut self, path: String) {o }
 }
 
 ///

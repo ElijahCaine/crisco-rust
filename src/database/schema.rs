@@ -3,7 +3,5 @@
 //!
 //! The schema file for `crisco`. Theoretically very simple.
 //!
-//! TODO:
-//!
-//! - `infer_schema!`
-//!
+
+infer_schema!(dotenv!("DATABASE_URL"));

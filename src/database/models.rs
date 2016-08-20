@@ -3,13 +3,17 @@
 //!
 //! The database models for interfacing with the `diesel` ORM.
 //!
-//! TODO:
-//!
-//! - `struct Url`
-//!     - `i32 id`
-//!     - `String path`
-//!     - `String dest`
-//! - `struct NewUrl`
-//!     - `String path`
-//!     - `String dest`
-//!
+use super::schema::urls;
+
+#[derive(Queryable)]
+pub struct Url {
+    pub id: i32,
+    pub path: String,
+    pub dest: String,
+}
+
+#[insertable_into(urls)]
+pub struct NewUrl<'a> {
+    pub path: &'a str,
+    pub dest: &'a str,
+}

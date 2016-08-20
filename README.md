@@ -1,5 +1,12 @@
 # Crisco: A URL Shortening Webapp
 
+## Setup
+
+```
+$ cargo install diesel_cli
+$ diesel setup
+```
+
 ## Installation
 
 *HTTP Code 204*: No content

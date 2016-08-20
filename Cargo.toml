@@ -9,4 +9,8 @@ description = "A URL Shortener."
 license = "MIT"
 
 [dependencies]
+diesel = "0.7.1"
+diesel_codegen = { version = "0.7.2", default-features = false, features = ["sqlite"] }
+dotenv = "0.8.0"
+dotenv_macros = "0.9.0"
 iron = "0.4.0"
