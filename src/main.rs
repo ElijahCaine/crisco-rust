@@ -1,4 +1,3 @@
-//!
 //! # Crisco: A URL Shortening Webapp
 //!
 //! Thank you for having an interest in Crisco. The project is in it's very early stages. If you
@@ -15,55 +14,29 @@
 #![feature(stmt_expr_attributes, custom_derive, custom_attribute, plugin)]
 #![plugin(diesel_codegen, dotenv_macros)]
 #[deny(missing_docs)]
-
 #[macro_use]
 extern crate diesel;
+#[macro_use]
+extern crate router;
 extern crate dotenv;
 extern crate iron;
+extern crate liquid;
 
 pub mod database;
-pub mod handler;
 pub mod routes;
 
-use database::{insert_url, connect, migrate, latest_url, get_url};
-use database::models::NewUrl;
-
-use diesel::sqlite::SqliteConnection;
+// use iron::Iron;
 
 
 fn main() {
-    let conn = connect(true);
-    match migrate(&conn) {
-        Ok(()) => test_populate_db(&conn),
-        Err(_) => println!("Oh shit! There was an error running migrations."),
-    }
-}
-
-fn test_populate_db(conn: &SqliteConnection) {
-    let new_urls = vec![
-        NewUrl { path: "a", dest: "1" },
-        NewUrl { path: "b", dest: "2" },
-        NewUrl { path: "c", dest: "3" },
-        NewUrl { path: "a", dest: "1" },
-    ];
-
-    for url in new_urls {
-        match insert_url(conn, &url) {
-            Some(t) => println!("id: {:?} | \t path: {:?} | \t dest: {:?}", t.id, t.path, t.dest),
-            None    => println!("duplicate: \t path: {:?} | \t dest: {:?}", url.path, url.dest),
-        }
-    }
-
-    match latest_url(conn) {
-        Some(t) => println!("Latest Url: id {:?} | \t path: {:?} | \t dest: {:?}",
-                                            t.id,          t.path,         t.dest),
-        None    => println!("No latest entry?"),
-    }
-
-    let path = "a";
-    match get_url(conn, &path.to_string()) {
-        Some(t) => println!("Entry `a`:  id {:?} | \t path: {:?} | \t dest: {:?}",
-                                            t.id,          t.path,         t.dest),
-        None    => println!("Couldn't fine entry corresponding to {}", path),
-    }
+    //     // Figure out where to put this stuff
+    //     let router = router!(index:   get     "/"       => routes::index,
+    //                          query:   get     "/:query" => routes::get,
+    //                          post:    put     "/"       => routes::put,
+    //                          delete:  delete  "/:query" => routes::del);
+    //
+    //     match Iron::new(router).http("localhost:3000") {
+    //         Ok(_) => println!("Starting server on localhost:3000"),
+    //         Err(_) => println!("Failed to start server. Exiting"),
+    //     };
 }

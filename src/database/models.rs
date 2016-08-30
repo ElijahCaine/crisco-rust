@@ -1,4 +1,3 @@
-//!
 //! # Models
 //!
 //! The database models for interfacing with the `diesel` ORM.

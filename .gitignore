@@ -3,3 +3,4 @@ target/
 .*.swo
 *.db
 Cargo.lock
+*.bk

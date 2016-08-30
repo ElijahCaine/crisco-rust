@@ -1,10 +1,10 @@
-//!
 //! # Schema
 //!
-//! The schema file for `crisco`. Theoretically very simple.
+//! The schema file for `crisco`.
 //!
-
-// infer_schema!(dotenv!("DATABASE_URL"));
+//! Previously used `infer_schema!` macro, not uses `table!` macro for in-memory database
+//! migrations.
+//!
 
 table! {
     urls {
