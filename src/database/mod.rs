@@ -5,7 +5,6 @@
 //!
 //! ## TODO:
 //!
-//! - `get_entry` *high*
 //! - `delete_entry` *low*
 //! - `update_entry` *low*
 //! - `migrate` *medium*
@@ -22,11 +21,12 @@ pub mod models;
 
 use self::models::{Url, NewUrl};
 
-use self::schema::urls;
+use self::schema::urls::dsl::*;
 
-use diesel::{ExecuteDsl, LoadDsl};
+use diesel::{ExecuteDsl, LoadDsl, FilterDsl, ExpressionMethods, LimitDsl};
 use diesel::connection::Connection;
 use diesel::sqlite::SqliteConnection;
+use diesel::migrations::{run_pending_migrations, RunMigrationsError};
 
 use dotenv::dotenv;
 
@@ -50,27 +50,71 @@ pub fn connect(mem: bool) -> SqliteConnection {
     }
 }
 
+
+///
+/// Runs migrations on database.
+///
+pub fn migrate(conn: &SqliteConnection) -> Result<(), RunMigrationsError> {
+   run_pending_migrations(conn)
+}
+
+
 ///
 /// Add entry to database.
 ///
 /// Returns Url entered into database.
 ///
-pub fn insert_url<'a>(conn: &SqliteConnection, entry: &NewUrl) -> Option<Url> {
+pub fn insert_url(conn: &SqliteConnection, entry: &NewUrl) -> Option<Url> {
     // Insert returns an Option so we need to handle that properly.
     match diesel::insert(entry)
-                 .into(urls::table)
+                 .into(urls)
                  .execute(conn)
     {
         // Load also returns an option but that's not liable to fail like insert does.
-        Ok(_) => urls::table.load(conn)
-                            .unwrap()
-                            .pop(),
+        // We should be able to use diesel's `get_result` but we can't so this has to suffice.
+        Ok(_) => latest_url(conn),
         Err(_) => None
     }
 }
 
+
 ///
-/// Returns latest entry added to the database.
+/// Get a URL from the database.
+///
+/// Returns a Url given a Path (`p: &String`).
+///
+pub fn get_url(conn: &SqliteConnection, p: &String) -> Option<Url> {
+    // Grab all urls with this path (should only be one).
+    // Limit the pool to 1 items.
+    // This should be true by default, might cause bugs(?).
+    // Unwrap the Result to get the Vec.
+    // Pop the (hopefully single) element out of the Vec.
+
+    urls.filter(path.eq(p))
+        .limit(1)
+        .load(conn)
+        .unwrap()
+        .pop()
+}
+
+
+///
+/// Get the latest URL from the database.
+///
+/// Returns latest URL added to the database given a connection.
 ///
 pub fn latest_url(conn: &SqliteConnection) -> Option<Url> {
+    // Load all elements from the database.
+    // Unwrap the Result into a Vec.
+    // Pop the last element off of the Vec.
+
+    // TODO: Optimize this
+    urls.load(conn)
+        .unwrap()
+        .pop()
 }
+
+// ///
+// /// Deletes a specific URL from the database.
+// ///
+// pub fn delete_url(conn: &SqliteConnection, p: &String) -> Result<Url, result::Error> { }

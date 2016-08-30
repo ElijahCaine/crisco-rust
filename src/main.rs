@@ -25,13 +25,21 @@ pub mod database;
 pub mod handler;
 pub mod routes;
 
-use database::{insert_url, connect};
+use database::{insert_url, connect, migrate, latest_url, get_url};
 use database::models::NewUrl;
+
+use diesel::sqlite::SqliteConnection;
 
 
 fn main() {
-    let conn = connect(false);
+    let conn = connect(true);
+    match migrate(&conn) {
+        Ok(()) => test_populate_db(&conn),
+        Err(_) => println!("Oh shit! There was an error running migrations."),
+    }
+}
 
+fn test_populate_db(conn: &SqliteConnection) {
     let new_urls = vec![
         NewUrl { path: "a", dest: "1" },
         NewUrl { path: "b", dest: "2" },
@@ -40,9 +48,22 @@ fn main() {
     ];
 
     for url in new_urls {
-        match insert_url(&conn, &url) {
-            Some(t) => println!("id: {:?} | path: {:?} | dest: {:?}", t.id, t.path, t.dest),
-            None    => println!("duplicate: path: {:?} | dest: {:?}", url.path, url.dest),
+        match insert_url(conn, &url) {
+            Some(t) => println!("id: {:?} | \t path: {:?} | \t dest: {:?}", t.id, t.path, t.dest),
+            None    => println!("duplicate: \t path: {:?} | \t dest: {:?}", url.path, url.dest),
         }
+    }
+
+    match latest_url(conn) {
+        Some(t) => println!("Latest Url: id {:?} | \t path: {:?} | \t dest: {:?}",
+                                            t.id,          t.path,         t.dest),
+        None    => println!("No latest entry?"),
+    }
+
+    let path = "a";
+    match get_url(conn, &path.to_string()) {
+        Some(t) => println!("Entry `a`:  id {:?} | \t path: {:?} | \t dest: {:?}",
+                                            t.id,          t.path,         t.dest),
+        None    => println!("Couldn't fine entry corresponding to {}", path),
     }
 }

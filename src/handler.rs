@@ -17,12 +17,10 @@
 //! ```
 //!
 //! ## TODO:
-//!
-//! - `Router` Methods:
-//!     - `remove`
-//! - Testing:
-//!     - `add`
-//!     - `remove`
+//! method:
+//! - `contains` method
+//! testing:
+//! - `contains` method
 //!
 //!
 extern crate iron;
@@ -60,7 +58,15 @@ impl Router {
         self.routes.insert(path, Box::new(handler));
     }
 
-    // pub fn del(&mut self, path: String) {o }
+    ///
+    /// Delete a route from the router.
+    ///
+    pub fn del(&mut self, path: &String) -> bool {
+        match self.routes.remove(path) {
+            Some(_) => return true,
+            None => return false
+        }
+    }
 }
 
 ///
@@ -113,12 +119,19 @@ mod tests {
         /// Handler contains the 'example' entry after adding it.
         assert_eq!(router.routes.contains_key("example"), true);
 
-        router.del("example".to_string());
+        let v1 = router.del(&"example".to_string());
+
+        /// Handler returns true after successful deleion.
+        assert_eq!(v1, true);
 
         /// Handler is empty after deleting an entry.
         assert_eq!(router.routes.is_empty(), true);
 
         /// Handler does not contain 'example' entry after deletion.
         assert_eq!(router.routes.contains_key("example"), false);
+
+        let v2 = router.del(&"example".to_string());
+        /// Handler returns false after un-successful deleion.
+        assert_eq!(v2, false);
     }
 }
