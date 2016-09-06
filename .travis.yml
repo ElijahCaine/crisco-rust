@@ -7,10 +7,11 @@ cache: cargo
 
 script:
 - |
+  cargo fmt    -- --write-mode=diff &&
   cargo build  --verbose &&
   cargo test   --verbose &&
-  cargo doc    --verbose --no-deps &&
-  cargo fmt    --verbose -- --write-mode=diff
+  cargo doc    --verbose --no-deps
+
 
 # Thank's Johann! [ http://johannh.me/blog/rustfmt-ci.html ]
 before_script: (cargo install rustfmt || true)
@@ -20,3 +21,4 @@ addons:
     packages:
       - sqlite3
       - libsqlite3-dev
+
