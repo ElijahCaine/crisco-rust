@@ -19,7 +19,7 @@ liquid = "0.8.4"
 [dependencies.diesel_codegen_syntex]
 version = "0.7.2"
 default-features = false
-features = ["with-syntex", "sqlite"]
+features = ["sqlite"]
 
 [dependencies.diesel_codegen]
 version = "0.7.2"

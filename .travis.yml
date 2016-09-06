@@ -1,7 +1,7 @@
 language: rust
 
 rust:
-- nightly-2016-07-07
+- nightly-2016-08-18
 
 cache: cargo
 
