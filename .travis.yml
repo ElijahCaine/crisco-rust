@@ -7,8 +7,7 @@ cache: cargo
 
 script:
 - |
-  find $HOME -name rustfmt &&
-  echo $PATH &&
+  export PATH=$PATH:$HOME/.cargo/bin
   cargo fmt    --verbose -- --write-mode=diff &&
   cargo build  --verbose &&
   cargo test   --verbose &&
@@ -16,7 +15,7 @@ script:
 
 
 # Thank's Johann! [ http://johannh.me/blog/rustfmt-ci.html ]
-before_script: (cargo install rustfmt --root /home/travis/rust/bin || true)
+before_script: (cargo install rustfmt || true)
 
 addons:
   apt:
