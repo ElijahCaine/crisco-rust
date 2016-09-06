@@ -1,6 +1,7 @@
 language: rust
 
-rust: nightly
+rust:
+- 1.11.0
 
 cache: cargo
 
@@ -12,10 +13,7 @@ script:
   cargo fmt    --verbose -- --write-mode=diff
 
 # Thank's Johann! [ http://johannh.me/blog/rustfmt-ci.html ]
-before_script:
-- |
-  (cargo install diesel_cli || true) &&
-  (cargo install rustfmt || true)
+before_script: (cargo install rustfmt || true)
 
 addons:
   apt:
