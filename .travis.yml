@@ -7,6 +7,8 @@ cache: cargo
 
 script:
 - |
+  whereis rustfmt &&
+  echo $PATH &&
   cargo fmt    -- --write-mode=diff &&
   cargo build  --verbose &&
   cargo test   --verbose &&
