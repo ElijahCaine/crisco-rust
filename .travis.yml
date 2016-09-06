@@ -1,0 +1,25 @@
+language: rust
+
+rust:
+- nightly-2016-08-18
+
+cache: cargo
+
+script:
+- |
+  export PATH=$PATH:$HOME/.cargo/bin
+  cargo fmt    --verbose -- --write-mode=diff &&
+  cargo build  --verbose &&
+  cargo test   --verbose &&
+  cargo doc    --verbose --no-deps
+
+
+# Thank's Johann! [ http://johannh.me/blog/rustfmt-ci.html ]
+before_script: (cargo install rustfmt || true)
+
+addons:
+  apt:
+    packages:
+      - sqlite3
+      - libsqlite3-dev
+
