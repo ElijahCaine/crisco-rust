@@ -7,16 +7,14 @@ cache: cargo
 
 script:
 - |
-  whereis rustfmt &&
-  echo $PATH &&
-  cargo fmt    -- --write-mode=diff &&
+  cargo fmt    --verbose -- --write-mode=diff &&
   cargo build  --verbose &&
   cargo test   --verbose &&
   cargo doc    --verbose --no-deps
 
 
 # Thank's Johann! [ http://johannh.me/blog/rustfmt-ci.html ]
-before_script: (cargo install rustfmt || true)
+before_script: (cargo install rustfmt --root /home/travis/rust/bin || true)
 
 addons:
   apt:
