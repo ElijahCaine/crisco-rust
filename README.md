@@ -1,11 +1,8 @@
 # Crisco: A URL Shortening Webapp
 
-## Setup
+![Linux Build Status][logo]
 
-```
-$ cargo install diesel_cli
-$ diesel setup
-```
+## Setup
 
 ## Installation
 
@@ -21,9 +18,12 @@ $ diesel setup
 
 ## Logo
 
-I didn't ask to use the Crisco logo.  If you are a representative of Crisco and
-want me to stop feel free to shoot me an email.
+I did not ask to use the Crisco logo or name.  If you are a representative of
+Crisco and would like me to get more creative, feel free to send me an email.
 
 ## License
 
-Crisco is licensed under the MIT License.
+Crisco is licensed under the [MIT License][MIT].
+
+[logo]: https://travis-ci.org/ElijahCaine/crisco-rust.svg
+[MIT]: https://mit-license.org/
