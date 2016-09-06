@@ -7,8 +7,8 @@ cache: cargo
 
 script:
 - |
-  cargo fmt    --verbose -- --write-mode=diff &&
   find $HOME -name rustfmt &&
+  cargo fmt    --verbose -- --write-mode=diff &&
   cargo build  --verbose &&
   cargo test   --verbose &&
   cargo doc    --verbose --no-deps
